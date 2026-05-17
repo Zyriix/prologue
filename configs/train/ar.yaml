@@ -1,0 +1,48 @@
+# ============================================================================
+# Training Stage: Standalone AR
+# ============================================================================
+
+wandb_project: Prologue-AR
+
+# Training
+crop_type: ten_crop
+sanity_check: True
+do_ar_eval_loader: True
+num_fid_samples: 50000
+batch_size: 2048
+eval_batch_size: 800
+phases: 500000:DO_PRIOR_AR,1
+
+# Learning rate & schedule
+lr_ar: 4e-4
+lr_ar_min: 1e-5
+lr_scheduler: linear
+warmup_steps: 62500
+peak_steps: 0
+
+# Regularization
+label_drop_prob: 0.1
+ar_drop: 0.1
+ar_emb_drop: 0.1
+ar_attn_drop: 0.0
+grad_clip: 1.0
+weight_decay_ar: 3e-2
+embedding_nowd: False
+
+# Resume
+resume_train: False
+continuous_training: False
+tokenizer_ckpt_path: ""
+resume_ckpt_path: ""
+
+# Sampling
+nocfg_sample: True
+
+# Logging
+save_dir: experiments_ar/${wandb_name}
+tmp_dir: tmp/${wandb_name}/fid_npz
+log_freq: 25
+visualize_freq: 10000
+ckpt_freq: 100000
+eval_freq: 100000
+grad_norm_freq: 0

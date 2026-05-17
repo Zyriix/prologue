@@ -1,0 +1,18 @@
+# ============================================================================
+# 1D tokenizer: z_len = 256, Encoder and Decoder use concat context
+# ============================================================================
+
+z_len: 256
+Prologue: False
+share_semantic_codebook: True
+share_semantic_encoder: True
+
+Encoder:
+    context_type: concat
+    rope_input_type: l
+    rope_ctx_type: hw
+    rope_theta: 10000
+    rope_ctx_theta: 2000
+
+Decoder:
+    context_type: concat

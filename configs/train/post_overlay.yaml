@@ -1,0 +1,8 @@
+# Post-variant: freeze visual enc/dec, train semantic + AR from scratch.
+# This overlay is applied AFTER ae.yaml to override its defaults.
+# resume_ckpt_path should point at a pretrained 2D tokenizer checkpoint
+# (Phase=0 step with rFID metric in its directory name).
+phases: "2600000:DO_PRIOR_ENC,DO_PRIOR_AR:1,1"
+resume_ckpt_path: ckpts/2d-tokenizer
+resume_enc: True
+resume_dec: True

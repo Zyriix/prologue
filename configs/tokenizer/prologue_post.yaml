@@ -1,0 +1,72 @@
+# ============================================================================
+# Prologue-Post: separate codebooks + independent backbone
+# (frozen 2D visual pathway + new 1D prologue path added on top)
+# ============================================================================
+
+z_len: 16
+Prologue: True
+share_semantic_codebook: False
+share_semantic_encoder: False
+semantic_dim: 512
+semantic_input_type: "encoder_output"
+
+# Visual encoder reverts to 2D-style (no concat context)
+Encoder:
+    max_seq_len: 256
+    context_type: none
+    rope_input_type: hw
+    rope_theta: 2000
+
+SemanticQuantizer:
+    codebook_size: 1024
+    z_dim: ${z_dim}
+    dim: ${semantic_dim}
+    cond_dim: ${cond_emb_dim}
+    length: ${z_len}
+    vq_beta: 0.25
+    temperature: 1.0
+    use_entropy_loss: False
+    use_quant_loss: False
+    monitor_metrics: True
+    codebook_init: simvq
+    z_norm_type: l2
+    frozen_codebook: False
+    codebook_proj: l2
+    ste: ProbQ
+
+SemanticEncoder:
+    input_dim: ${dim}
+    output_dim: ${semantic_dim}
+    cond_dim: ${cond_emb_dim}
+    cond_input_dim: ${num_classes}
+    max_seq_len: ${z_len}
+    ctx_max_seq_len: ${x_len}
+    dim: ${semantic_dim}
+    layer_num: 10
+    mlp_ratio: 11/4
+    heads: 8
+    emb_dropout: ${emb_drop}
+    drop: ${drop}
+    attn_drop: ${attn_drop}
+    attn_norm: True
+    context_type: concat
+    rope_input_type: l
+    rope_ctx_type: hw
+    rope_theta: 10000
+    rope_ctx_theta: 2000
+    rope_axes_dim: ${rope_axes_dim}
+    abs_pos: ${abs_pos}
+    rope: ${rope}
+    causal: False
+    out_act: False
+    out_norm: False
+    out_layer: False
+    input_bias: True
+    input_layer: True
+    norm_layer: ${norm_layer}
+    ffn_type: ${ffn_type}
+    use_label: ${use_label}
+
+ARModel:
+    max_seq_len: ${eval:'${z_len}+256'}
+    rope_hybrid_l_len: ${z_len}

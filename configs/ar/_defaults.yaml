@@ -1,0 +1,39 @@
+# ============================================================================
+# AR Model: common params shared by all size variants
+# ============================================================================
+
+ARModel:
+    input_dim: ${z_dim}
+    output_dim: ${codebook_size}
+    max_seq_len: ${z_len}
+    input_bias: False
+    input_layer: False
+    cond_dim: ${cond_emb_dim}
+    cond_input_dim: ${num_classes}
+    emb_dropout: ${ar_emb_drop}
+    drop: ${ar_drop}
+    attn_drop: ${ar_attn_drop}
+    attn_norm: True
+    context_type: none
+    rope_input_type: l
+    rope_ctx_type: l
+    rope_theta: 10000
+    rope_ctx_theta: 10000
+    rope_axes_dim: [24,20,20]
+    abs_pos: ${abs_pos}
+    rope: ${rope}
+    causal: True
+    out_act: False
+    out_norm: True
+    out_layer: True
+    ffn_bias: False
+    out_bias: False
+    attn_out_bias: False
+    norm_layer: ${norm_layer}
+    ffn_type: ${ffn_type}
+    mlp_ratio: 11/4
+    zero_out: False
+    temperature: 1.0
+    use_label: ${use_label}
+    conditional_injection: llamagen
+    ste_ar_embedding: False

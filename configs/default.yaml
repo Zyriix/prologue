@@ -1,0 +1,90 @@
+# ============================================================================
+# Base Configuration (shared across all modes and training stages)
+# ============================================================================
+
+# Dataset
+data_dir: data/imagenet-object-localization-challenge.zip/ILSVRC/Data/CLS-LOC/train
+image_size: 256
+num_channels: 3
+num_classes: 1001
+patch_size: 16
+patch_dim: ${eval:'${patch_size}*${patch_size}*${num_channels}'}
+x_len: ${eval:'int(${image_size}*${image_size}*${num_channels}/${patch_dim})'}
+xflip: True
+use_label: True
+ae_no_label: False
+perceptual_network: vgg  # "vgg" for LPIPS-VGG16, "convnext" for ConvNeXt-S logit loss, "both" for LPIPS + ConvNeXt
+convnext_weight: 0.1
+
+# Evaluation data
+eval_data_dir: data/imagenet-object-localization-challenge.zip/ILSVRC/Data/CLS-LOC/val
+eval_crop_type: center
+eval_fid_ref_path: refs/ImageNet256_local.npz
+
+# Common architectural hyperparams (referenced by Encoder / Decoder / Quantizer / AR)
+dim: 768
+z_dim: 14
+cond_emb_dim: 32
+codebook_size: 16384
+norm_layer: RMSNorm
+ffn_type: geglu
+abs_pos: False
+rope: True
+rope_axes_dim: [20,20,24]
+
+use_eos: false
+prior_visual_dropout: 0.0
+
+# Common training defaults
+seed: 42
+ar_beta1: 0.9
+ar_beta2: 0.96
+precision: "bf16"
+use_tf32: True
+torch_compile: True
+num_workers: 8
+
+# Regularization defaults
+drop: 0.0
+emb_drop: 0.0
+attn_drop: 0.0
+ar_drop: 0.0
+ar_emb_drop: 0.0
+ar_attn_drop: 0.0
+
+# GAN Loss
+GANLoss:
+    disc_loss: vanilla
+    disc_dim: 64
+    disc_type: patchgan
+    image_size: 256
+    disc_num_layers: 3
+    disc_in_channels: 3
+    gen_adv_loss: vanilla
+    lecam_loss_weight: 0.001
+    norm_type: bn
+    aug_prob: 1.0
+    disc_weight: 1.0
+    r1_weight: 0.01
+
+# EMA
+ae_ema_halflife: 1000
+ar_ema_halflife: 2500
+ema_sampling: False
+ema_reconstruction: True
+
+# Sampling defaults
+cache_kv: True
+temperature: 1.0
+topK: 0.0
+topP: 0.0
+cfg: 2.0
+cfg_schedule: constant
+cfg_power: 1.0
+
+# Logging defaults
+visualize_img_num: 8
+wandb_dir: ${oc.env:WANDB_DIR,wandb_runs}
+save_ckpt: True
+save_best: True
+grad_norm_freq: 0   # 0 = disabled; set e.g. 225 to log per-param grad norms every N steps

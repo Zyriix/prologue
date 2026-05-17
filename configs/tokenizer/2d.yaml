@@ -1,0 +1,8 @@
+# ============================================================================
+# 2D tokenizer: z_len = x_len = 256, no context, no Prologue
+# ============================================================================
+
+z_len: 256
+Prologue: False
+share_semantic_codebook: True
+share_semantic_encoder: True

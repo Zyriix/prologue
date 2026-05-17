@@ -1,0 +1,37 @@
+# ============================================================================
+# Prologue (default): 1D prologue prefix + 2D visual tokens, separate
+# codebooks, shared encoder. This is the main configuration of the paper.
+# ============================================================================
+
+z_len: 16
+Prologue: True
+share_semantic_codebook: False
+share_semantic_encoder: True
+
+Encoder:
+    context_type: concat
+    rope_input_type: l
+    rope_ctx_type: hw
+    rope_theta: 10000
+    rope_ctx_theta: 2000
+
+SemanticQuantizer:
+    codebook_size: 1024
+    z_dim: ${z_dim}
+    dim: ${dim}
+    cond_dim: ${cond_emb_dim}
+    length: ${z_len}
+    vq_beta: 0.25
+    temperature: 1.0
+    use_entropy_loss: False
+    use_quant_loss: False
+    monitor_metrics: True
+    codebook_init: simvq
+    z_norm_type: l2
+    frozen_codebook: False
+    codebook_proj: l2
+    ste: ProbQ
+
+ARModel:
+    max_seq_len: ${eval:'${z_len}+${x_len}'}
+    rope_hybrid_l_len: ${z_len}

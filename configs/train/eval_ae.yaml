@@ -1,0 +1,34 @@
+# ============================================================================
+# Training Stage: AE Evaluation
+# ============================================================================
+
+wandb_project: Prologue-Eval
+
+phases: 1:DO_L1-DO_LPIPS-DO_GAN_G,DO_GAN_D:1,1
+batch_size: 8
+eval_batch_size: 400
+crop_type: random
+
+# All LR = 0 (eval only)
+lr_enc: 0
+lr_dec: 0
+lr_ar: 0
+lr_gan_loss: 0
+lr_scheduler: none
+
+# Resume
+resume_train: False
+resume_enc: False
+resume_dec: False
+resume_gan: False
+resume_ar: False
+resume_ckpt_path: ""
+
+# Logging
+save_dir: eval/${wandb_name}
+tmp_dir: tmp/${wandb_name}/fid_npz
+log_freq: 1
+visualize_freq: 1
+ckpt_freq: 100000
+eval_freq: 1
+save_ckpt: False

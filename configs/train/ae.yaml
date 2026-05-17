@@ -1,0 +1,77 @@
+# ============================================================================
+# Training Stage: AE (Tokenizer + optional joint AR)
+# ============================================================================
+
+wandb_project: Prologue-Tokenizer
+
+# Training
+crop_type: random
+batch_size: 256
+eval_batch_size: 200
+phases: 2000000:DO_L1-DO_LPIPS-DO_GAN_G-DO_PRIOR_ENC,DO_GAN_D-DO_PRIOR_AR:1,1
+
+# Learning rates
+lr_enc: 1e-4
+lr_dec: 1e-4
+lr_ar: 1e-4
+lr_gan_loss: 1e-4
+lr_enc_min: 1e-5
+lr_dec_min: 1e-5
+lr_ar_min: 1e-5
+lr_gan_loss_min: 1e-5
+lr_scheduler: linear
+warmup_steps: 20000
+peak_steps: 100000
+
+# Optimizer
+beta1: 0.0
+beta2: 0.99
+ar_beta1: 0.9
+ar_beta2: 0.99
+
+# Regularization
+label_drop_prob: 0.1
+ar_drop: 0.0
+ar_emb_drop: 0.0
+ar_attn_drop: 0.0
+grad_clip_enc: 0.0
+grad_clip_dec: 0.0
+grad_clip_ar: 0.0
+grad_clip_gan: 0.0
+
+# Weight decay
+weight_decay_enc: 0.0
+weight_decay_dec: 0.0
+weight_decay_ar: 3e-2
+weight_decay_gan: 1e-4
+embedding_nowd: False
+
+# Loss
+l1_weight: 1.0
+l2_weight: 1.0
+lpips_weight: 1.0
+gan_G_weight: 0.1
+gan_D_weight: 1.0
+entropy_loss_weight: 0.05
+commitment_loss_weight: 1.0
+prior_enc_semantic_weight: 3.0
+prior_enc_visual_weight: 3.0
+gan_start: 0
+disc_adaptive_weight: False
+
+# Resume
+resume_train: False
+resume_enc: False
+resume_dec: False
+resume_gan: False
+resume_ar: False
+resume_ckpt_path: ""
+
+# Logging
+save_dir: experiments/${wandb_name}
+tmp_dir: tmp/${wandb_name}/fid_npz
+log_freq: 25
+visualize_freq: 40000
+ckpt_freq: 200000
+eval_freq: 200000
+grad_norm_freq: 0

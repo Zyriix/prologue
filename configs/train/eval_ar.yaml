@@ -1,0 +1,27 @@
+# ============================================================================
+# Training Stage: AR Evaluation
+# Overrides ar.yaml for eval-only mode (1-step, lr=0)
+# All other settings (batch_size, crop_type, num_fid_samples, etc.) inherit
+# from ar.yaml unchanged.
+# ============================================================================
+
+wandb_project: Prologue-AR-Eval
+
+eval_only: True
+phases: 1:DO_PRIOR_AR,1
+sanity_check: True
+do_ar_eval_loader: False   # only enabled for the reference cfg run in sweep_cfg
+
+eval_batch_size: 400
+# All LR = 0 (eval only)
+lr_ar: 0
+lr_ar_min: 0
+lr_scheduler: none
+resume_train: False
+
+# Logging
+save_dir: eval_ar/${wandb_name}
+log_freq: 1
+visualize_freq: 1
+eval_freq: 1
+save_ckpt: False

@@ -1,0 +1,91 @@
+# ============================================================================
+# Tokenizer Architecture: Encoder, Decoder, Quantizer (PrologueQuantizer)
+# ============================================================================
+# Defaults are 2D-compatible. Mode overlays (mode/*.yaml) override
+# context_type, rope_*, max_seq_len as needed.
+
+Encoder:
+    input_dim: ${patch_dim}
+    output_dim: ${dim}
+    cond_dim: ${cond_emb_dim}
+    cond_input_dim: ${num_classes}
+    max_seq_len: ${z_len}
+    ctx_max_seq_len: ${x_len}
+    dim: ${dim}
+    layer_num: 12
+    mlp_ratio: 8/3
+    heads: 12
+    emb_dropout: ${emb_drop}
+    drop: ${drop}
+    attn_drop: ${attn_drop}
+    attn_norm: True
+    causal: False
+    out_act: False
+    out_norm: False
+    out_layer: False
+    input_bias: True
+    input_layer: True
+    norm_layer: ${norm_layer}
+    ffn_type: ${ffn_type}
+    use_label: ${use_label}
+    rope: ${rope}
+    abs_pos: ${abs_pos}
+    rope_axes_dim: ${rope_axes_dim}
+    # 2D defaults (overridden by mode overlays for 1D / Prologue)
+    context_type: none
+    rope_input_type: hw
+    rope_ctx_type: hw
+    rope_theta: 2000
+    rope_ctx_theta: 2000
+
+Quantizer:
+    codebook_size: ${codebook_size}
+    z_dim: ${z_dim}
+    dim: ${dim}
+    cond_dim: ${cond_emb_dim}
+    length: ${x_len}
+    vq_beta: 0.25
+    temperature: 1.0
+    use_entropy_loss: False
+    use_quant_loss: True
+    monitor_metrics: True
+    codebook_init: simvq
+    z_norm_type: l2
+    frozen_codebook: False
+    codebook_proj: l2
+    ste: VQ
+
+Decoder:
+    input_dim: ${z_dim}
+    output_dim: ${patch_dim}
+    cond_dim: ${cond_emb_dim}
+    cond_input_dim: ${num_classes}
+    max_seq_len: ${x_len}
+    ctx_max_seq_len: ${z_len}
+    input_bias: True
+    input_layer: True
+    dim: ${dim}
+    layer_num: 12
+    mlp_ratio: 8/3
+    heads: 12
+    emb_dropout: ${emb_drop}
+    drop: ${drop}
+    attn_drop: ${attn_drop}
+    attn_norm: True
+    causal: False
+    out_act: False
+    out_norm: True
+    out_layer: True
+    norm_layer: ${norm_layer}
+    ffn_type: ${ffn_type}
+    zero_out: True
+    use_label: ${use_label}
+    rope: ${rope}
+    abs_pos: ${abs_pos}
+    rope_axes_dim: ${rope_axes_dim}
+    # 2D defaults
+    context_type: none
+    rope_input_type: hw
+    rope_ctx_type: l
+    rope_theta: 2000
+    rope_ctx_theta: 10000

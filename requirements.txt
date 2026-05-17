@@ -1,0 +1,62 @@
+# Prologue runtime dependencies (every package here is actually imported by
+# train_ar.py / train_tokenizer.py / train_pretoken.py and their transitive deps).
+#
+# Install order (see setup_env.sh):
+#   [1] `pip install xformers==0.0.33.post2 torchvision==0.24.1` (anchors
+#       torch 2.9.1 + cu128 via xformers' strict torch pin)
+#   [2] `conda install -c nvidia cuda-nvcc-tools=12.8.*`        (nvcc for
+#       flash-attn build)
+#   [3] `pip install ninja packaging`                            (flash-attn
+#       build deps), then
+#       `pip install --no-build-isolation flash-attn==2.8.3`     (source build)
+#   [4] `pip install -r requirements.txt`                        (this file)
+#
+# NOT listed here:
+#   - torch / torchvision / xformers / flash-attn / cuda-nvcc-tools — handled
+#     in setup_env.sh because they need a specific (anchor wheel | source-
+#     build | nvidia conda channel) install path.
+#   - kornia — model_gan.py:207 try/except guarded with no-op Blur fallback;
+#     the reference env did not have it installed and the paper runs match
+#     this exclusion.
+
+# Training loop + dist + ckpt I/O
+accelerate==1.12.0
+safetensors==0.7.0
+omegaconf==2.3.0
+einops==0.8.1
+torchmetrics==1.8.2
+PyYAML==6.0.3
+
+# Numerics
+numpy==2.1.3
+scipy==1.16.3
+
+# Model profiling: FLOPs reporting at train startup (try/except guarded but
+# we pin it because the paper tables quote thop FLOPs).
+thop==0.1.1.post2209072238
+
+# Eval (FID/IS): TF is imported only inside the spawned `eval_fid.py`
+# subprocess, so it never touches the training hot loop.
+tensorflow==2.20.0
+
+# Diagnostics (utils.draw_data_conditional_entropy paper plot helper).
+matplotlib==3.10.8
+
+# Misc utilities
+Pillow==12.0.0
+requests==2.32.5
+tqdm==4.67.1
+wandb==0.23.1
+
+# Interactive demo (`app.py`). Not on the training/eval hot path.
+gradio==5.49.1
+
+# Dataset preprocessing (`dataset_tools.py` CLI; not on training/eval hot path).
+#   click  — CLI parser
+#   opencv-python + lmdb — LSUN-style LMDB dataset reader (open_lmdb path)
+# (pyspng is intentionally NOT pinned: dataset.py's fast-PNG path is try/except
+#  guarded and the reference env did not have it installed — PIL fallback was
+#  used for every paper run.)
+click==8.3.1
+opencv-python==4.10.0.84
+lmdb==1.5.1

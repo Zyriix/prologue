@@ -1,0 +1,26 @@
+Prologue
+Copyright 2026 Bowen Zheng, The Chinese University of Hong Kong, Shenzhen
+
+This product is released under the Apache License, Version 2.0 (see LICENSE),
+with the following carve-out:
+
+================================================================================
+NVIDIA StyleGAN3 — Creative Commons BY-NC-SA 4.0
+================================================================================
+
+The following files are derived from NVIDIA Corporation's StyleGAN3 codebase
+(https://github.com/NVlabs/stylegan3) and retain their original license,
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+(https://creativecommons.org/licenses/by-nc-sa/4.0/):
+
+  - dataset.py
+  - dataset_tools.py
+  - dnnlib/__init__.py
+  - dnnlib/util.py
+
+Each file preserves the original NVIDIA copyright header and adds a
+"Modified work" attribution for the changes made in this repository.
+
+Because CC BY-NC-SA 4.0 is a NonCommercial license, downstream commercial use
+of *these four files specifically* is not granted by this repository. The
+remainder of the codebase (under the Apache-2.0 license) is unaffected.
